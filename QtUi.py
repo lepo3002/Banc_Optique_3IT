@@ -59,6 +59,3 @@ class MainWindow(QtWidgets.QDialog):
             self.msg.exec_()
         else:
             self.close()
-
-
-
