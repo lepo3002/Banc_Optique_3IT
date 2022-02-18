@@ -1,4 +1,5 @@
 import sys
+import os
 from skimage import io
 from matplotlib import pyplot as plt
 import numpy as np
@@ -6,10 +7,6 @@ from crop_manual import *
 import datetime
 from PIL import Image
 from QtUi import *
-
-# Variables
-avg = []
-wavelength = []
 
 # Ui for the parameters
 app = QtWidgets.QApplication(sys.argv)
@@ -31,9 +28,13 @@ if not set_param.crop.checkState():
     print("_________ACQUISITION_EN_COURS_________")
 
 # Setting up the directory for the photos
-directory = 'ZonesNano/'
-input_loc = directory+'Camera_'+str(lambda_low)+'nm.tiff'
-output_loc = directory+'cropped/'+'crop_'+str(lambda_low)+'nm.png'
+directory = set_param.working_dir +'/'
+
+# Variables
+avg = []
+wavelength = []
+input_loc = directory+str(620)+'.tiff'
+output_loc = directory+'cropped/'+'crop_'+str(620)+'nm.png'
 
 # Setup and opening of the selection window
 screen, px = setup(input_loc)
@@ -55,15 +56,10 @@ pygame.display.quit()
 # Save the image in the output location
 im.save(output_loc)
 
-# Calculate the average of the pixels values and save it
-image = io.imread(output_loc)
-avg.append(np.average(image))
-wavelength.append(lambda_low)
-
 # For loop that will do the same cropping for each photos
 for i in range(((lambda_high-lambda_low)//lambda_step)):
-    input_loc = directory+'Camera_'+str(lambda_low+(lambda_step*i))+'nm.tiff'
-    output_loc = directory+'cropped/'+'crop_'+str(lambda_low+(lambda_step*i))+'nm.tiff'
+    input_loc = directory + str(lambda_low+lambda_step*i) + '.tiff'
+    output_loc = directory + 'cropped/' + 'crop_' + str(lambda_low+lambda_step*i) + 'nm.png'
 
     im = Image.open(input_loc)
     im = im.crop((left, upper, right, lower))
@@ -79,7 +75,7 @@ plt.title(experience_name+" ("+str(datetime.date.today())+")")
 plt.grid()
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Intensity")
+plt.savefig(directory+'graph.png')
 plt.show()
-# plt.savefig(path+'Graphique.png')
 
 

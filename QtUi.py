@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, uic
+import os
 
 errorHandling = [
     'Please enter a value for all parameters',
@@ -23,6 +24,15 @@ class MainWindow(QtWidgets.QDialog):
         self.msg.setText('Error')
         self.msg.setInformativeText('Please enter a value for all parameters')
         self.msg.setWindowTitle("Error")
+        self.working_dir = os.getcwd()
+        self.bt_working_dir.clicked.connect(self.set_working_dir)
+
+    def set_working_dir(self):
+        value = QtWidgets.QFileDialog.getExistingDirectory(
+            self, "Open Directory", self.working_dir, QtWidgets.QFileDialog.ShowDirsOnly
+        )
+        if value:
+            self.working_dir = value
 
     def button_pressed(self):
         self.data.clear()
