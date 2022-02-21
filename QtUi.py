@@ -109,7 +109,6 @@ class MainWindow(QtWidgets.QDialog):
                 self.msg.exec_()
                 self.data.clear()
 
-
     def browsing(self):
         if self.crop.isChecked():
             self.bt_working_dir.setEnabled(True)
