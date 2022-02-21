@@ -7,6 +7,8 @@ errorHandling = [
     'Wavelength step can''t be superior to the wavelength interval',
     'Please enter a numeric value for all parameters except the experience name',
     'The slits maximum width is 5 mm',
+    'The wavelength to crop needs to be between the high and low wavelengths',
+    'The wavelength to crop is not in the data to measure'
 
 ]
 
@@ -26,6 +28,9 @@ class MainWindow(QtWidgets.QDialog):
         self.msg.setWindowTitle("Error")
         self.working_dir = os.getcwd()
         self.bt_working_dir.clicked.connect(self.set_working_dir)
+        self.crop.stateChanged.connect(self.browsing)
+        self.bt_working_dir.setEnabled(False)
+        self.wavelengths = []
 
     def set_working_dir(self):
         value = QtWidgets.QFileDialog.getExistingDirectory(
@@ -44,6 +49,7 @@ class MainWindow(QtWidgets.QDialog):
         self.data.append(self.gain.text())
         self.data.append(self.entrance.text())
         self.data.append(self.exit.text())
+        self.data.append(self.firstw.text())
 
         if not all(v for v in self.data):
             self.msg.setInformativeText(errorHandling[0])
@@ -54,7 +60,8 @@ class MainWindow(QtWidgets.QDialog):
                   self.data[4].isdigit() or
                   self.data[5].isdigit() or
                   self.data[6].isdigit() or
-                  self.data[7].isdigit()):
+                  self.data[7].isdigit() or
+                  self.data[8].isdigit()):
             self.msg.setInformativeText(errorHandling[3])
             self.msg.exec_()
         elif int(self.data[1]) < 400 or int(self.data[3]) > 1400:
@@ -67,5 +74,22 @@ class MainWindow(QtWidgets.QDialog):
         elif int(self.data[6]) > 5 or int(self.data[7]) > 5:
             self.msg.setInformativeText(errorHandling[4])
             self.msg.exec_()
+        elif (int(self.data[8]) < int(self.data[1]) or
+              int(self.data[8]) > int(self.data[3])):
+            self.msg.setInformativeText(errorHandling[5])
+            self.msg.exec_()
         else:
-            self.close()
+            for i in range((int(self.data[3]) - int(self.data[1])) // int(self.data[2])):
+                self.wavelengths.append(int(self.data[1]) + (i * int(self.data[2])))
+            if int(self.data[8]) in self.wavelengths:
+                self.close()
+            else:
+                self.msg.setInformativeText(errorHandling[6])
+                self.msg.exec_()
+
+    def browsing(self):
+        if self.crop.isChecked():
+            self.bt_working_dir.setEnabled(True)
+        else:
+            self.bt_working_dir.setEnabled(False)
+            self.working_dir = os.getcwd()
