@@ -1,5 +1,4 @@
 import sys
-import os
 from skimage import io
 from matplotlib import pyplot as plt
 import numpy as np
@@ -29,58 +28,75 @@ directory = set_param.working_dir +'/'
 
 # Part for data acquisition with Mono and Cam
 # If there is already photos to process, we dont acquire data
-if not set_param.crop.checkState():
+if not set_param.crop.isChecked():
     # TODO: Mettre le code pour la caméra et le monochromateur ici
     print("_________ACQUISITION_EN_COURS_________")
     directory = directory + 'ZonesNano/'
 
+if set_param.multiple.isChecked():
+    nbZones = int(set_param.data[9])
+else:
+    nbZones = 1
 
-# Variables
-avg = []
-wavelength = []
-input_loc = directory+str(firstW)+'.tiff'
-output_loc = directory+'cropped/'+'crop_'+str(firstW)+'nm.png'
+for j in range(nbZones):
+    # Variables
+    j = j+1
+    avg = []
+    wavelength = []
+    input_loc = directory+str(firstW)+'.tiff'
+    try:
+        os.mkdir(directory + 'cropped')
+    except FileExistsError:
+        pass
 
-# Setup and opening of the selection window
-screen, px = setup(input_loc)
-left, upper, right, lower = SelectionWindow(screen, px)
+    output_loc = directory+'cropped/'+'crop_'+str(firstW)+'nm.png'
 
-# Readjust the coordinates if they are reversed
-if right < left:
-    left, right = right, left
-if lower < upper:
-    lower, upper = upper, lower
+    # Setup and opening of the selection window
+    screen, px = setup(input_loc)
+    left, upper, right, lower = SelectionWindow(screen, px)
 
-# Doing the cropping
-im = Image.open(input_loc)
-im = im.crop((left, upper, right, lower))
+    # Readjust the coordinates if they are reversed
+    if right < left:
+        left, right = right, left
+    if lower < upper:
+        lower, upper = upper, lower
 
-# Exit the selection window
-pygame.display.quit()
-
-# Save the image in the output location
-im.save(output_loc)
-
-# For loop that will do the same cropping for each photos
-for i in set_param.wavelengths:
-    input_loc = directory + str(i) + '.tiff'
-    output_loc = directory + 'cropped/' + 'crop_' + str(i) + 'nm.png'
-
+    # Doing the cropping
     im = Image.open(input_loc)
     im = im.crop((left, upper, right, lower))
+
+    # Exit the selection window
+    pygame.display.quit()
+
+    # Save the image in the output location
     im.save(output_loc)
 
-    image = io.imread(output_loc)
-    avg.append(np.average(image))
-    wavelength.append(i)
+    if set_param.multiple.isChecked():
+        experience_name = experience_name+' Zone '+str(j)
+        graph = 'graph(zone_'+str(j)+').png'
+    else:
+        graph = 'graph_'+str(datetime.date.today())+'.png'
 
-# Create the graphic et show it
-plt.scatter(wavelength, avg, marker='o')
-plt.title(experience_name+" ("+str(datetime.date.today())+")")
-plt.grid()
-plt.xlabel("Wavelength (nm)")
-plt.ylabel("Intensity")
-plt.savefig(directory+'graph.png')
-plt.show()
+    # For loop that will do the same cropping for each photos
+    for i in set_param.wavelengths:
+        input_loc = directory + str(i) + '.tiff'
+        output_loc = directory + 'cropped/' + 'crop_' + str(i) + 'nm.png'
+
+        im = Image.open(input_loc)
+        im = im.crop((left, upper, right, lower))
+        im.save(output_loc)
+
+        image = io.imread(output_loc)
+        avg.append(np.average(image))
+        wavelength.append(i)
+
+    # Create the graphic and show it
+    plt.scatter(wavelength, avg, marker='o')
+    plt.title(experience_name+" ("+str(datetime.date.today())+")")
+    plt.grid()
+    plt.xlabel("Wavelength (nm)")
+    plt.ylabel("Intensity")
+    plt.savefig(directory+graph)
+    plt.show()
 
 

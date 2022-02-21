@@ -172,14 +172,14 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="w_step">
        <property name="text">
-        <string>50</string>
+        <string>20</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="w_start">
        <property name="text">
-        <string>500</string>
+        <string>400</string>
        </property>
       </widget>
      </item>
@@ -206,19 +206,6 @@
      </item>
     </layout>
    </widget>
-  </widget>
-  <widget class="QCheckBox" name="crop">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>300</y>
-     <width>221</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Only crop images</string>
-   </property>
   </widget>
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
@@ -294,7 +281,40 @@ cropping (clearer)</string>
     <item row="0" column="1">
      <widget class="QLineEdit" name="firstw">
       <property name="text">
-       <string>650</string>
+       <string>640</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_6">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>280</y>
+     <width>251</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_7">
+    <item row="0" column="0">
+     <widget class="QCheckBox" name="crop">
+      <property name="text">
+       <string>Only crop images</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="multiple">
+      <property name="text">
+       <string>Multiple zones</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="nbZones">
+      <property name="enabled">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
