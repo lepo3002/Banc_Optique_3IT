@@ -79,9 +79,9 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QPushButton" name="bt_working_dir">
+     <widget class="QPushButton" name="cancel">
       <property name="text">
-       <string>Browse</string>
+       <string>Cancel</string>
       </property>
      </widget>
     </item>
@@ -315,6 +315,13 @@ cropping (clearer)</string>
      <widget class="QLineEdit" name="nbZones">
       <property name="enabled">
        <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="bt_working_dir">
+      <property name="text">
+       <string>Browse</string>
       </property>
      </widget>
     </item>

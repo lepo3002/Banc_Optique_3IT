@@ -1,3 +1,5 @@
+import sys
+
 from PyQt5 import QtWidgets, uic
 import os
 
@@ -34,6 +36,7 @@ class MainWindow(QtWidgets.QDialog):
         self.bt_working_dir.setEnabled(False)
         self.wavelengths = []
         self.zones = 1
+        self.cancel.clicked.connect(self.quit)
 
     def set_working_dir(self):
         value = QtWidgets.QFileDialog.getExistingDirectory(
@@ -121,3 +124,6 @@ class MainWindow(QtWidgets.QDialog):
             self.nbZones.setEnabled(True)
         else:
             self.nbZones.setEnabled(False)
+
+    def quit(self):
+        sys.exit()
