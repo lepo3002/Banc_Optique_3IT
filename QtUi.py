@@ -12,7 +12,6 @@ errorHandling = [
     'The wavelength to crop needs to be between the high and low wavelengths',
     'The wavelength to crop is not in the data to measure',
     'You need at least 1 zone'
-
 ]
 
 

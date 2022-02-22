@@ -1,4 +1,3 @@
-import sys
 from skimage import io
 from matplotlib import pyplot as plt
 import numpy as np
@@ -24,7 +23,7 @@ slit_exi = int(set_param.data[7])
 firstW = int(set_param.data[8])
 
 # Setting up the directory for the photos
-directory = set_param.working_dir +'/'
+directory = set_param.working_dir + '\\'
 font = ImageFont.truetype('arial.ttf', 20)
 
 # Part for data acquisition with Mono and Cam
