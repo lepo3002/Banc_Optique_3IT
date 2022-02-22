@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 from crop_manual import *
 import datetime
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from QtUi import *
 
 # Ui for the parameters
@@ -25,6 +25,7 @@ firstW = int(set_param.data[8])
 
 # Setting up the directory for the photos
 directory = set_param.working_dir +'/'
+font = ImageFont.truetype('arial.ttf', 20)
 
 # Part for data acquisition with Mono and Cam
 # If there is already photos to process, we dont acquire data
@@ -33,6 +34,7 @@ if not set_param.crop.isChecked():
     print("_________ACQUISITION_EN_COURS_________")
     directory = directory + 'ZonesNano/'
 
+# If we have more than 1 zones to crop
 if set_param.multiple.isChecked():
     nbZones = int(set_param.data[9])
 else:
@@ -43,13 +45,14 @@ for j in range(nbZones):
     j = j+1
     avg = []
     wavelength = []
+
+    # Directories
     input_loc = directory+str(firstW)+'.tiff'
     try:
         os.mkdir(directory + 'cropped')
     except FileExistsError:
         pass
-
-    output_loc = directory+'cropped/'+'crop_'+str(firstW)+'nm.png'
+    output_loc = directory+'cropped\\'+'crop_'+str(firstW)+'nm.png'
 
     # Setup and opening of the selection window
     screen, px = setup(input_loc)
@@ -71,16 +74,31 @@ for j in range(nbZones):
     # Save the image in the output location
     im.save(output_loc)
 
+    # Multiple zones identification on separate image
     if set_param.multiple.isChecked():
-        experience_name = experience_name+' Zone '+str(j)
-        graph = 'graph(zone_'+str(j)+').png'
+        # Naming according to zones
+        experience_name_zone = experience_name+' Zone '+str(chr(j+64))
+        graph = 'graph(zone_'+str(chr(j+64))+').png'
+        if j == 1:
+            zones = Image.open(input_loc)
+            zones = zones.convert("RGB")
+            Z1 = ImageDraw.Draw(zones)
+            Z1.text((left, upper), chr(64+j), font=font, fill='red')
+            zones.save(directory+'ZonesIdentification.png')
+        else:
+            zones = Image.open(directory+'ZonesIdentification.png')
+            Z1 = ImageDraw.Draw(zones)
+            Z1.text((left, upper), chr(64+j), font=font, fill='red')
+            zones.save(directory + 'ZonesIdentification.png')
     else:
+        # Default name
         graph = 'graph_'+str(datetime.date.today())+'.png'
+        experience_name_zone = experience_name
 
     # For loop that will do the same cropping for each photos
     for i in set_param.wavelengths:
         input_loc = directory + str(i) + '.tiff'
-        output_loc = directory + 'cropped/' + 'crop_' + str(i) + 'nm.png'
+        output_loc = directory + 'cropped\\' + 'crop_' + str(i) + 'nm.png'
 
         im = Image.open(input_loc)
         im = im.crop((left, upper, right, lower))
@@ -90,13 +108,14 @@ for j in range(nbZones):
         avg.append(np.average(image))
         wavelength.append(i)
 
-    # Create the graphic and show it
-    plt.scatter(wavelength, avg, marker='o')
+    # Create the graphic
+    plt.plot(wavelength, avg, marker='o', label=experience_name_zone)
     plt.title(experience_name+" ("+str(datetime.date.today())+")")
     plt.grid()
     plt.xlabel("Wavelength (nm)")
     plt.ylabel("Intensity")
-    plt.savefig(directory+graph)
-    plt.show()
+    plt.legend(loc='upper right')
 
-
+# Save and show the graph
+plt.savefig(directory+graph)
+plt.show()
