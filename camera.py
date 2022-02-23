@@ -40,6 +40,7 @@ def take_picture(
         picture_number: float = None,
         saving_path: Path = Path("Results"),
         display: bool = False,
+        polarization: Optional[str] = 'default',
         ) -> tuple[Path, np.array]:
     """Take a picture from the specified camera
 
@@ -85,8 +86,8 @@ def take_picture(
 
         """
 
-    # TODO: Quelle est la polarisation de la camera? (S ou P)
-    polarization: str = "S"
+    # # TODO: Quelle est la polarisation de la camera? (S ou P)
+    # polarization: str = "S"
 
     exposure_time = camera.ExposureTime.get()
     black_level = camera.BlackLevel.get()
@@ -105,7 +106,7 @@ def take_picture(
             {
                 "experiment_name": experiment_name,
                 "polarization": polarization,
-                "datetime": datetime.now().strftime("%Y:%m:%d %H:%M:%S"),
+                "datetime": datetime.datetime.now().strftime("%Y:%m:%d %H:%M:%S"),
                 "time_taken": time(),
                 "picture_number": picture_number,
                 "camera_exposure": exposure_time,
@@ -123,17 +124,18 @@ def take_picture(
     if picture_number is None:
         picture_filename = (
                 folder_path
-                / f'{experiment_name} - {datetime.now().strftime("%d %B %Hh%Mm%Ss")}.tif'
+                / f'{experiment_name} - {datetime.datetime.now().strftime("%d %B %Hh%Mm%Ss")}.tif'
         )
     else:
         picture_filename = folder_path / (f"{experiment_name} - {picture_number}.tif")
 
     ##
-    frame = camera.get_frame
+    frame = camera.get_frame()
+    frame.convert_pixel_format(PixelFormat.Mono8)
     current_datetime = local_picture_data_dict["datetime"].encode("ascii") + b"\0"
     tifffile.imwrite(
         picture_filename,
-        frame,
+        frame.as_opencv_image(),
         description=local_picture_data_dict["experiment_name"],
         datetime=current_datetime,
         software=local_picture_data_dict["software"],
@@ -186,7 +188,7 @@ def take_picture(
         ),
     )
     if display:
-        cv2.imshow(f"{experiment_name} - {polarization}", frame)
+        cv2.imshow(f"{experiment_name} - {polarization}", frame.as_opencv_image())
         cv2.waitKey(1)
 
     return picture_filename, frame

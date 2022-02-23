@@ -4,6 +4,23 @@ from crop_manual import *
 import datetime
 from PIL import Image, ImageDraw, ImageFont
 from QtUi import *
+from vimba import *
+import cv2
+from camera import *
+
+GLOBAL_PICTURE_DATA_DICT = {
+    # "experiment_name": "My experiment",
+    # "datetime": datetime.now().strftime("%Y:%m:%d %H:%M:%S"),
+    # "time_taken": time(),
+    "software": "N/A",
+    "camera_maker": "Allied Vision",
+    "camera_model": "Guppy",
+    "camera_model_number": "F-033",
+    # paramètres
+    # "camera_exposure": 11000,
+    # "camera_black_level": 0,
+    # "camera_gain": 0,
+}
 
 # Ui for the parameters
 app = QtWidgets.QApplication(sys.argv)
@@ -22,7 +39,7 @@ slit_exi = int(set_param.data[7])
 firstW = int(set_param.data[8])
 
 # Setting up the directory for the photos
-directory = set_param.working_dir + '\\'
+directory = set_param.working_dir + '\\ZonesNano\\'
 font = ImageFont.truetype('arial.ttf', 20)
 
 # Part for data acquisition with Mono and Cam
@@ -31,6 +48,18 @@ if not set_param.crop.isChecked():
     # TODO: Mettre le code pour la caméra et le monochromateur ici
     print("_________ACQUISITION_EN_COURS_________")
     directory = directory + 'ZonesNano/'
+    with Vimba.get_instance() as vimba:
+            cams = vimba.get_all_cameras()
+            with cams[0] as cam:
+                for wl in set_param.wavelengths:
+                    msg = QtWidgets.QMessageBox()
+                    msg.setIcon(QtWidgets.QMessageBox.Warning)
+                    msg.setText('Warning')
+                    msg.setInformativeText('Enter '+str(wl)+' nm in the spectro window')
+                    msg.setWindowTitle("Message")
+                    msg.exec_()
+                    a = take_picture(cam, "test", "Photos", picture_number=str(wl))  
+
 
 # If we have more than 1 zones to crop
 if set_param.multiple.isChecked():

@@ -98,7 +98,7 @@ class MainWindow(QtWidgets.QDialog):
             self.msg.exec_()
             self.data.clear()
         else:
-            for i in range((int(self.data[3]) - int(self.data[1])) // int(self.data[2])):
+            for i in range((int(self.data[3]) - int(self.data[1])) // int(self.data[2])+1):
                 self.wavelengths.append(int(self.data[1]) + (i * int(self.data[2])))
 
             if self.multiple.isChecked():
