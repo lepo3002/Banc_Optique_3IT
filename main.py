@@ -1,4 +1,3 @@
-from skimage import io
 from matplotlib import pyplot as plt
 import numpy as np
 from crop_manual import *
@@ -103,7 +102,7 @@ for j in range(nbZones):
         im = im.crop((left, upper, right, lower))
         im.save(output_loc)
 
-        image = io.imread(output_loc)
+        image = np.array(im)
         avg.append(np.average(image))
         wavelength.append(i)
 
