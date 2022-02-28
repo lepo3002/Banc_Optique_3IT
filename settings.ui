@@ -53,6 +53,38 @@
      </item>
     </layout>
    </item>
+   <item row="4" column="0">
+    <layout class="QGridLayout" name="gridLayout_6">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="firstw">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>640</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_2">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Wavelength for image
+cropping (clearer)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="1" rowspan="2">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="font">
@@ -215,7 +247,96 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="1" rowspan="2">
+   <item row="5" column="1">
+    <layout class="QGridLayout" name="gridLayout_7">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="crop">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Only crop images</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="multiple">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Multiple zones</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="nbZones">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="bt_working_dir">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Browse</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="5" column="0">
+    <layout class="QGridLayout" name="gridLayout_5">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="bt">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="text">
+        <string>Start</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="cancel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1" rowspan="3">
     <widget class="QGroupBox" name="groupBox">
      <property name="font">
       <font>
@@ -282,125 +403,20 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <layout class="QGridLayout" name="gridLayout_6">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <item row="0" column="2">
-      <widget class="QLineEdit" name="firstw">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>640</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_2">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Wavelength for image
-cropping (clearer)</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="0">
-    <layout class="QGridLayout" name="gridLayout_5">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="bt">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="text">
-        <string>Start</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="cancel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="1">
-    <layout class="QGridLayout" name="gridLayout_7">
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="crop">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Only crop images</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="multiple">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Multiple zones</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="nbZones">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="bt_working_dir">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Browse</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     <property name="sizeType">
+      <enum>QSizePolicy::Minimum</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
